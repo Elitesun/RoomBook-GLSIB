@@ -1,59 +1,123 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# RoomBook
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Application web de réservation de salles et de matériels pour un établissement.
 
-## About Laravel
+## Présentation
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+RoomBook permet aux enseignants de réserver des salles et du matériel (vidéoprojecteurs, micros, tableaux interactifs, etc.), avec validation par un responsable et supervision complète par un administrateur.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+L'application gère automatiquement les conflits de réservation et centralise le suivi des demandes dans une interface claire par rôle.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Fonctionnalités principales
 
-## Learning Laravel
+- Gestion de trois rôles: enseignant, responsable, administrateur.
+- Consultation d'un planning hebdomadaire des disponibilités.
+- Création de demandes de réservation (salle, créneau, motif, matériel optionnel).
+- Détection automatique des conflits sur une même salle.
+- Validation des demandes par un responsable (acceptation/refus avec motif).
+- Suivi du statut des demandes (en attente, acceptée, refusée, annulée).
+- Notifications e-mail à l'enseignant lors de l'acceptation ou du refus.
+- Administration des salles, matériels et utilisateurs.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## Rôles et parcours
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Enseignant
 
-## Laravel Sponsors
+- Consulter le planning de la semaine.
+- Soumettre une demande de réservation.
+- Suivre ses demandes.
+- Annuler une réservation acceptée (selon les règles métier en place).
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Responsable
 
-### Premium Partners
+- Voir les demandes en attente.
+- Accepter ou refuser une demande avec un motif.
+- Consulter le planning global.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### Administrateur
 
-## Contributing
+- Gérer les salles (capacité, bâtiment, disponibilité).
+- Gérer le matériel (quantité, disponibilité).
+- Gérer les comptes utilisateurs et les rôles.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Stack technique
 
-## Code of Conduct
+- Backend: Laravel (PHP)
+- Frontend: Blade, Vite, Tailwind CSS, JavaScript
+- Base de données: MySQL (ou compatible selon configuration)
+- Tests: PHPUnit
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Modèle de données (résumé)
 
-## Security Vulnerabilities
+- users: informations utilisateur et rôle.
+- rooms: salles, capacité, bâtiment, disponibilité.
+- equipment: matériel, quantité, disponibilité.
+- bookings: réservation, créneau, statut, motif de refus.
+- booking_equipment: pivot réservation/matériel avec quantité.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Règles métier importantes
 
-## License
+- Une réservation ne peut pas chevaucher une autre réservation acceptée pour la même salle.
+- L'heure de fin doit être strictement supérieure à l'heure de début.
+- Le planning est affiché par semaine avec navigation.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Installation et démarrage
+
+1. Cloner le projet.
+2. Installer les dépendances PHP:
+
+```bash
+composer install
+```
+
+3. Installer les dépendances front:
+
+```bash
+npm install
+```
+
+4. Copier le fichier d'environnement et générer la clé:
+
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+
+5. Configurer la base de données dans `.env`.
+6. Lancer les migrations et les seeders:
+
+```bash
+php artisan migrate --seed
+```
+
+7. Démarrer l'application:
+
+```bash
+php artisan serve
+npm run dev
+```
+
+## Comptes de démonstration
+
+- admin@roombook.tg / password
+- responsable1@roombook.tg / password
+- enseignant1@roombook.tg / password
+
+Accès:
+
+- Connexion: http://localhost:8000/login
+- Inscription: http://localhost:8000/register
+
+Redirections après connexion:
+
+- enseignant -> /bookings
+- responsable -> /responsable/pending
+- admin -> /admin/dashboard
+
+## Tests
+
+Pour exécuter la suite de tests:
+
+```bash
+php artisan test
+```
