@@ -36,12 +36,14 @@
                         <td class="px-4 py-3 text-slate-600 max-w-xs truncate">{{ $booking->purpose }}</td>
                         <td class="px-4 py-3"><x-status-badge :status="$booking->status" /></td>
                         <td class="px-4 py-3">
-                            @if ($booking->starts_at->isFuture() && $booking->status !== 'annulee')
+                            @if ($booking->starts_at->isFuture() && $booking->status !== 'annulee' )
                                 <div class="flex flex-wrap gap-2">
+                                    @if(false)
                                     <a href="{{ route('bookings.edit', $booking) }}"
                                        class="inline-flex items-center rounded-md border border-slate-300 bg-white px-2.5 py-1 text-xs font-medium text-slate-700 hover:bg-slate-50 transition-colors">
                                         Modifier
                                     </a>
+                                    @endif
                                     <form method="POST" action="{{ route('bookings.destroy', $booking) }}"
                                           onsubmit="return confirm('Supprimer cette réservation ?')">
                                         @csrf @method('DELETE')
