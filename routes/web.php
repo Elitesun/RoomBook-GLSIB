@@ -11,6 +11,10 @@ use App\Http\Controllers\Responsable\PlanningController as ResponsablePlanningCo
 use App\Http\Controllers\RoomPlanningController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/laravel', function(){
+    return view('welcome');
+}) ;
+
 Route::get('/', function () {
     return redirect()->route('login');
 });
