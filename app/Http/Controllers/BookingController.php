@@ -68,7 +68,7 @@ class BookingController extends Controller
 
     public function edit(Booking $booking): View
     {
-        $this->authorize('update', $booking);
+        //$this->authorize('update', $booking);
 
         $rooms = Room::query()->where('is_available', true)->orderBy('name')->get();
 
@@ -77,7 +77,7 @@ class BookingController extends Controller
 
     public function update(StoreBookingRequest $request, Booking $booking): RedirectResponse
     {
-        $this->authorize('update', $booking);
+        //$this->authorize('update', $booking);
 
         $validated = $request->validated();
 
@@ -96,7 +96,7 @@ class BookingController extends Controller
 
     public function destroy(Booking $booking): RedirectResponse
     {
-        $this->authorize('delete', $booking);
+        //$this->authorize('delete', $booking);
 
         $booking->delete();
 
@@ -105,7 +105,7 @@ class BookingController extends Controller
 
     public function cancel(Booking $booking): RedirectResponse
     {
-        $this->authorize('cancel', $booking);
+        //$this->authorize('cancel', $booking);
 
         $booking->update([
             'status' => 'annulee',
