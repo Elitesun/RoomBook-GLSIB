@@ -38,12 +38,11 @@
                         <td class="px-4 py-3">
                             @if ($booking->starts_at->isFuture() && $booking->status !== 'annulee' )
                                 <div class="flex flex-wrap gap-2">
-                                    @if($booking->status !== 'acceptee')
+                                    @if ($booking->status == 'en_attente')
                                     <a href="{{ route('bookings.edit', $booking) }}"
                                        class="inline-flex items-center rounded-md border border-slate-300 bg-white px-2.5 py-1 text-xs font-medium text-slate-700 hover:bg-slate-50 transition-colors">
                                         Modifier
                                     </a>
-                                    @endif
                                     <form method="POST" action="{{ route('bookings.destroy', $booking) }}"
                                           onsubmit="return confirm('Supprimer cette réservation ?')">
                                         @csrf @method('DELETE')
@@ -51,6 +50,7 @@
                                             Supprimer
                                         </button>
                                     </form>
+                                    @endif
                                     @if ($booking->status === 'acceptee')
                                         <form method="POST" action="{{ route('bookings.cancel', $booking) }}"
                                               onsubmit="return confirm('{{ $booking->starts_at->lte(now()->addMinutes(30)) ? 'Début dans moins de 30 min. Confirmer ?' : 'Confirmer l\'annulation ?' }}')">
